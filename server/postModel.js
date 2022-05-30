@@ -2,7 +2,7 @@ module.exports = class Post {
   constructor(data) {
     this.id = data.id;
     this.title = data.title;
-    this.name = data.name;
+    this.author = data.author;
     this.body = data.body;
   }
 
