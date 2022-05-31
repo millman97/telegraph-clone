@@ -1,4 +1,4 @@
-const siteBackendUrl = `https://localhost:3000`;
+const siteBackendUrl = `http://localhost:3000`;
 
 document.addEventListener("DOMContentLoaded", init);
 
@@ -30,8 +30,7 @@ function addPostForm() {
 }
 
 function getPost(id) {
-  document.querySelector("#postWrapper").classList.remove("hidden");
-  fetch(`${siteBackendUrl}#${id}`)
+  fetch(`${siteBackendUrl}/${id}`)
     .then((r) => r.json())
     .then((data) => {
       displayPost(data);
@@ -55,16 +54,16 @@ function createPost(title, author, body) {
   fetch(`${siteBackendUrl}`, options)
     .then((r) => r.json())
     .then((data) => {
-      displayPost(data);
-      window.location.href = `${window.location.href}#${data.id}`;
+      let postData = Object.values(data)[0].toString().replace('(', '').replace(')', '').split(',');
+      window.location.href = `${window.location.href}#${postData[0]}`;
+      window.location.reload();
     })
     .catch(console.warn);
 }
 
 function displayPost(p) {
-  document.querySelector("#displayTitle").value = p.title;
-  document.querySelector("#displayAuthor").value = p.author;
-  document.querySelector("#displayBody").value = p.body;
-
-  document.querySelector("#postWrapper").style.display = grid;
+  document.querySelector("#displayTitle").textContent = p.title;
+  document.querySelector("#displayAuthor").textContent = p.author;
+  document.querySelector("#displayBody").textContent = p.body;
+  document.querySelector("#postWrapper").style.display = 'grid';
 }
