@@ -17,10 +17,25 @@ app.get("/", async (req, res) => {
     }
 });
 
-app.get("/:id", (req, res) => {
-    const postId = req.params.id;
+app.get("/:id", async (req, res) => {
+    try {
+        const postId = req.params.id;
+        let postData = await Post.findById(postId);
+        res.status(200).send(postData);
+    } catch (err) {
+        res.status(500).send(err);
+    }
 });
 
-app.post("/", (req, res) => { });
+app.post("/", async (req, res) => {
+    try {
+        let postData = req.body;
+        let newPost = await Post.create(postData);
+        console.log(newPost);
+        res.status(201).send(newPost);
+    } catch (err) {
+        res.status(500).send(err);
+    }
+});
 
 module.exports = app;

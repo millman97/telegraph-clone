@@ -23,8 +23,7 @@ module.exports = class Post {
   static findById(id) {
     return new Promise(async (resolve, reject) => {
       try {
-        /* let postData = await db query */
-
+        let postData = await db.query("SELECT * FROM posts WHERE id = $1;", [id]);
         let post = new Post(postData.rows[0]);
         resolve(post);
       } catch (err) {
@@ -36,8 +35,9 @@ module.exports = class Post {
   static create(newPost) {
     return new Promise(async (resolve, reject) => {
       try {
-        /* let postData = await db insert newPost */
-        let post = new Post(postData.rows[0]);
+        let postData = await db.query(`INSERT INTO posts (title, author, body) VALUES ($1, $2, $3) RETURNING posts`, [newPost.title, newPost.author, newPost.body])
+        let post = postData.rows[0];
+        console.log(post);
         resolve(post);
       } catch (err) {
         reject("Post could not be created");
