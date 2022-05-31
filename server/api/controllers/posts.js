@@ -11,7 +11,7 @@ const Post = require('../models/Post');
 app.get("/", async (req, res) => {
     try {
         const posts = await Post.all;
-        res.status(200).send("hello");
+        res.status(200).send(posts);
     } catch (err) {
         res.status(500).send(err);
     }
