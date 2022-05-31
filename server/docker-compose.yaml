@@ -1,16 +1,32 @@
-version: "3"
+version: '3'
 services:
   api:
-    image: node
+    image: node:16.15.0
     working_dir: /code
-    ports:
-      - 80:3000
+    ports: 
+      - 3000:3000
+    environment: 
+      - PGUSER=admin
+      - PGHOST=db
+      - PGPASSWORD=pass
+      - PGDATABASE=posts
+      - PGPORT=5432
+    depends_on:
+      - db
     volumes:
       - type: bind
-        source: .
+        source: ./api
         target: /code
+    command: bash -c "npm install && npm start"
 
   db:
-    image: mongo
-    ports:
-      - 27017:27017
+    image: postgres
+    volumes:
+      - "dbdata:/var/lib/postgresql/data"
+      - "./db:/docker-entrypoint-initdb.d/:ro"
+    environment: 
+      - POSTGRES_DB=posts
+      - POSTGRES_USER=admin
+      - POSTGRES_PASSWORD=pass
+volumes:
+  dbdata:
