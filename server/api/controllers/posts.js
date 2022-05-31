@@ -31,7 +31,6 @@ app.post("/", async (req, res) => {
     try {
         let postData = req.body;
         let newPost = await Post.create(postData);
-        console.log(newPost);
         res.status(201).send(newPost);
     } catch (err) {
         res.status(500).send(err);

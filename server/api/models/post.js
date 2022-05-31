@@ -37,7 +37,6 @@ module.exports = class Post {
       try {
         let postData = await db.query(`INSERT INTO posts (title, author, body) VALUES ($1, $2, $3) RETURNING posts`, [newPost.title, newPost.author, newPost.body])
         let post = postData.rows[0];
-        console.log(post);
         resolve(post);
       } catch (err) {
         reject("Post could not be created");
